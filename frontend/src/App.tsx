@@ -23,7 +23,7 @@ function App() {
         </button>
         <p>this is me testing neovim</p>
       </div>
-      <p className="read-the-docs">
+      <p className="text-red-500">
         Click on the Vite and React logos to learn more
       </p>
     </>
