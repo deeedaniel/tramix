@@ -13,15 +13,6 @@ async def test_getsongkey():
 
 @router.get("/suggest-songs")
 async def suggest_songs(string: str):
-    # async with httpx.AsyncClient() as client:
-    #     try:
-    #         response = await client.get(
-    #             f"{GETSONGKEY_API_URL}/songs/{song_id}/suggestions"
-    #         )
-    #         return response.json()
-    #     except Exception as e:
-    #         raise HTTPException(status_code=500, detail=str(e))
-
     response_text = get_song_suggestions(string)
     print(response_text)
     return {"response": response_text}
