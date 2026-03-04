@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import httpx
 import asyncio
 import os
+from google import genai
 
 app = FastAPI()
 
@@ -10,6 +11,8 @@ load_dotenv()
 
 GETSONGKEY_API_URL = os.getenv("GETSONGKEY_API_URL")
 GETSONGKEY_API_KEY = os.getenv("GETSONGKEY_API_KEY")
+
+client = genai.Client()
 
 
 @app.get("/")
@@ -50,3 +53,23 @@ async def test_getsongkey():
             )
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/suggest-songs")
+async def suggest_songs(string: str):
+    # async with httpx.AsyncClient() as client:
+    #     try:
+    #         response = await client.get(
+    #             f"{GETSONGKEY_API_URL}/songs/{song_id}/suggestions"
+    #         )
+    #         return response.json()
+    #     except Exception as e:
+    #         raise HTTPException(status_code=500, detail=str(e))
+
+    response = client.models.generate_content(
+        model="gemini-2.5-flash", 
+        contents=f"Suggest 5 songs that have similar BPMs and are in the same key as: {string}. Return the songs in a JSON array of objects with the following properties: name, artist, bpm, key. Only return the JSON array, no other text."
+    )
+
+    print(response.text)
+
+    return {"response": response.text}
