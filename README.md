@@ -26,7 +26,7 @@ cp .env.example .env
 
 ## run the server
 
-fastapi dev main.py
+fastapi dev app/main.py
 
 # frontend
 
