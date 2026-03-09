@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from app.services.gemini import get_song_suggestions
 from app.services.getsongkey import test_search_metallica
+from app.services.getITunesPreview import getITunesPreview
 from app.core.config import settings
 
 router = APIRouter()
@@ -14,5 +15,10 @@ async def test_getsongkey():
 @router.get("/suggest-songs")
 async def suggest_songs(string: str):
     response_text = get_song_suggestions(string)
-    print(response_text)
-    return {"response": response_text}
+    return await getITunesPreview(response_text)
+    #return {"response": response_text}
+
+@router.get("/get-songs-from-itunes")
+async def get_songs_from_itunes(string: str):
+    # Implementation for fetching songs from iTunes
+    pass
