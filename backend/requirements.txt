@@ -2,3 +2,5 @@ fastapi[standard]
 httpx
 python-dotenv
 google-genai
+librosa
+numpy
