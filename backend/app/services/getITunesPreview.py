@@ -1,6 +1,8 @@
 import requests
 import json
 
+maxSongs = 5 # set max songs generated to 5
+
 async def getITunesPreview(jsonString: str) -> None:
     print("recieved jsonString: ", jsonString)
     # Parse the JSON string to extract the preview URL
@@ -19,8 +21,9 @@ async def getITunesPreview(jsonString: str) -> None:
             continue
 
         data = response.json()["results"]
-        res = [(track["previewUrl"], track["trackName"]) for track in data if track["artistName"].lower() == artist.lower()]
+        res = [(track["previewUrl"], track["trackName"], track["artistName"]) for track in data if track["artistName"].lower() == artist.lower()]
         if res: songs.append(res[0])   
-        print(res)
+        if len(songs) == 5: # if 5 itunes previews sucessfully generated, break
+            break
 
     return songs
