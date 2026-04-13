@@ -21,10 +21,12 @@ async def getITunesPreview(jsonString: str) -> None:
             continue
 
         data = response.json()["results"]
-        res = [track["previewUrl"] for track in data if track["artistName"].lower() == artist.lower()]
-        if res: 
-            song["previewURL"] = res[0]
-            songs.append(song)  
+        matches = [track for track in data if track["artistName"].lower() == artist.lower() and track.get("previewUrl")]
+        if matches:
+            track = matches[0]
+            song["previewURL"] = track["previewUrl"]
+            song["artworkURL"] = track.get("artworkUrl100", "").replace("100x100", "600x600")
+            songs.append(song)
         if len(songs) == 5: # if 5 itunes previews sucessfully generated, break
             break
 

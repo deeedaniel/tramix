@@ -1,42 +1,47 @@
 [
   {
-    "name": "Hate to Say I Told You So",
-    "artist": "The Hives",
-    "bpm": 136,
-    "key": "F major",
-    "camelot_key": "7B",
-    "previewURL": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/8a/d6/30/8ad630ac-7654-997c-493a-d733d044f38c/mzaf_6281328828268108369.plus.aac.p.m4a"
-  },
-  {
-    "name": "Are You Gonna Be My Girl",
-    "artist": "Jet",
+    "name": "Naïve",
+    "artist": "The Kooks",
     "bpm": 103,
-    "key": "D major",
-    "camelot_key": "10B",
-    "previewURL": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/73/02/2a/73022a7c-ad2d-e498-821d-5ecbc8f76dbf/mzaf_3418002418452155467.plus.aac.p.m4a"
+    "key": "G# Minor",
+    "camelot_key": "4A",
+    "previewURL": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ca/1e/23/ca1e235d-00a1-a303-3aec-31162469f0f0/mzaf_5531109067547919554.plus.aac.p.m4a",
+    "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/0c/9d/f5/0c9df53b-daca-dd82-ede9-2fda67d9f529/13UADIM60831.rgb.jpg/600x600bb.jpg"
   },
   {
-    "name": "Get Free",
-    "artist": "The Vines",
-    "bpm": 139,
-    "key": "D minor",
-    "camelot_key": "7A",
-    "previewURL": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/46/87/e2/4687e204-2549-3e13-46d4-79716ab70a29/mzaf_5628712423869123352.plus.aac.p.m4a"
+    "name": "Alright",
+    "artist": "Supergrass",
+    "bpm": 146,
+    "key": "E Minor",
+    "camelot_key": "12A",
+    "previewURL": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/7c/1a/dc/7c1adc83-e57c-e417-3a6b-ac1b2be0f1a5/mzaf_4264818523702719660.plus.aac.p.m4a",
+    "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/7b/d7/8f/7bd78f1a-0030-131a-5e70-a8ffe15d6887/0724383335053.jpg/600x600bb.jpg"
   },
   {
-    "name": "I Bet You Look Good on the Dancefloor",
-    "artist": "Arctic Monkeys",
-    "bpm": 103,
-    "key": "F♯ minor",
-    "camelot_key": "11A",
-    "previewURL": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/51/e7/1d/51e71de6-78be-b710-8330-48375fe58e58/mzaf_10188154717809133872.plus.aac.p.m4a"
+    "name": "Dakota",
+    "artist": "Stereophonics",
+    "bpm": 147,
+    "key": "E Major",
+    "camelot_key": "12B",
+    "previewURL": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ae/61/f6/ae61f65a-ea86-ac53-2d12-191e6b350245/mzaf_17157481472023863474.plus.aac.p.m4a",
+    "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3c/a6/c2/3ca6c275-3773-b301-5697-5a283ef697d5/08UMGIM23571.rgb.jpg/600x600bb.jpg"
   },
   {
-    "name": "Woman",
-    "artist": "Wolfmother",
-    "bpm": 151,
-    "key": "A minor",
+    "name": "My Number",
+    "artist": "Foals",
+    "bpm": 128,
+    "key": "F# Minor",
+    "camelot_key": "2A",
+    "previewURL": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/e5/09/1d/e5091de2-1503-c6b4-d0d1-ca80a4401965/mzaf_12874835112926962267.plus.aac.p.m4a",
+    "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/bf/d8/e2/bfd8e2c0-bad4-a0cd-3a4a-4f7a5e534314/190295006365.jpg/600x600bb.jpg"
+  },
+  {
+    "name": "I Predict a Riot",
+    "artist": "Kaiser Chiefs",
+    "bpm": 160,
+    "key": "C Minor",
     "camelot_key": "8A",
-    "previewURL": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/50/15/40/50154078-ee12-d290-6ff8-7b0a8c515662/mzaf_2578714501921035421.plus.aac.p.m4a"
+    "previewURL": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/8e/2f/2c/8e2f2c51-8f6d-cb7d-f78f-62b442db7c01/mzaf_10197525889888779171.plus.aac.p.m4a",
+    "artworkURL": "https://is1-ssl.mzstatic.com/image/thumb/Music20/v4/91/55/73/915573b3-6c59-5f39-7824-7394c8f21886/190374306911.jpg/600x600bb.jpg"
   }
 ]
