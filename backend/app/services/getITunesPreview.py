@@ -30,9 +30,14 @@ def _strip_cr(s: str) -> str:
     return re.sub(r"\r+", "", s)
 
 
-async def getITunesPreview(jsonString: str) -> list[dict]:
-    logger.info(f"recieved jsonString: {jsonString}")
-    song_data = json.loads(jsonString)
+async def getITunesPreview(payload: str | list) -> list[dict]:
+    logger.info(f"recieved song payload type: {type(payload).__name__}")
+    if isinstance(payload, list):
+        song_data = payload
+    elif isinstance(payload, str):
+        song_data = json.loads(payload)
+    else:
+        raise TypeError("Song payload must be a JSON string or a list of song dicts.")
     if not song_data or not isinstance(song_data, list):
         raise ValueError("Invalid JSON format or missing 'previewUrl' key.")
 
