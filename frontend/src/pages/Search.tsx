@@ -80,7 +80,33 @@ export default function Search() {
           </button>
         </form>
 
-        {suggestResponse.length > 0 && (
+        {loading && (
+          <div className="space-y-2">
+            <p className="text-xs text-neutral-400 tracking-widest mb-2">
+              suggestions:
+            </p>
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div
+                key={i}
+                className="bg-neutral-900 rounded-xl p-3 flex items-center justify-between gap-4"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 shrink-0 rounded-md bg-neutral-800 animate-pulse" />
+                  <div className="space-y-2">
+                    <div className="h-3.5 w-32 bg-neutral-800 rounded animate-pulse" />
+                    <div className="h-3 w-20 bg-neutral-800 rounded animate-pulse" />
+                  </div>
+                </div>
+                <div className="flex gap-2 shrink-0">
+                  <div className="h-6 w-16 bg-neutral-800 rounded-md animate-pulse" />
+                  <div className="h-6 w-10 bg-neutral-800 rounded-md animate-pulse" />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {!loading && suggestResponse.length > 0 && (
           <div className="space-y-2">
             <p className="text-xs text-neutral-400 tracking-widest mb-2">
               suggestions:
