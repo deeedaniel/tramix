@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { API_BASE_URL } from "../config";
 
 interface Song {
   name: string;
@@ -40,9 +41,7 @@ export default function Search() {
 
     setLoading(true);
 
-    // Using test data to avoid pinging endpoint
-    // TODO: Change this to the real endpoint
-    fetch(`http://localhost:8000/suggest-songs?string=${userSong}`)
+    fetch(`${API_BASE_URL}/suggest-songs?string=${userSong}`)
       .then((response) => response.json())
       .then((json) => {
         setSuggestResponse(json);
