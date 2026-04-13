@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Hate to Say I Told You So",
+    "artist": "The Hives",
+    "bpm": 136,
+    "key": "F major",
+    "camelot_key": "7B",
+    "previewURL": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/8a/d6/30/8ad630ac-7654-997c-493a-d733d044f38c/mzaf_6281328828268108369.plus.aac.p.m4a"
+  },
+  {
+    "name": "Are You Gonna Be My Girl",
+    "artist": "Jet",
+    "bpm": 103,
+    "key": "D major",
+    "camelot_key": "10B",
+    "previewURL": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/73/02/2a/73022a7c-ad2d-e498-821d-5ecbc8f76dbf/mzaf_3418002418452155467.plus.aac.p.m4a"
+  },
+  {
+    "name": "Get Free",
+    "artist": "The Vines",
+    "bpm": 139,
+    "key": "D minor",
+    "camelot_key": "7A",
+    "previewURL": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/46/87/e2/4687e204-2549-3e13-46d4-79716ab70a29/mzaf_5628712423869123352.plus.aac.p.m4a"
+  },
+  {
+    "name": "I Bet You Look Good on the Dancefloor",
+    "artist": "Arctic Monkeys",
+    "bpm": 103,
+    "key": "F♯ minor",
+    "camelot_key": "11A",
+    "previewURL": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/51/e7/1d/51e71de6-78be-b710-8330-48375fe58e58/mzaf_10188154717809133872.plus.aac.p.m4a"
+  },
+  {
+    "name": "Woman",
+    "artist": "Wolfmother",
+    "bpm": 151,
+    "key": "A minor",
+    "camelot_key": "8A",
+    "previewURL": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/50/15/40/50154078-ee12-d290-6ff8-7b0a8c515662/mzaf_2578714501921035421.plus.aac.p.m4a"
+  }
+]
