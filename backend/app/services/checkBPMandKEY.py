@@ -1,3 +1,4 @@
+import re
 import httpx
 import asyncio
 import librosa
@@ -86,7 +87,7 @@ async def analyze_track(song: dict):
             if path and os.path.exists(path):
                 try: os.remove(path)
                 except: pass
-                
+
 # Camelot wheel mapping (key_index, is_major) -> Camelot notation
 CAMELOT = {
     (0,  True):  "8B",  # C major

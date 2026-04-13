@@ -25,6 +25,11 @@ def _title_match(json_name: str, itunes_track: str) -> bool:
     return a == b or a in b or b in a
 
 
+def _strip_cr(s: str) -> str:
+    """Remove stray CR characters models sometimes insert (e.g. C\\rmajor)."""
+    return re.sub(r"\r+", "", s)
+
+
 async def getITunesPreview(jsonString: str) -> list[dict]:
     logger.info(f"recieved jsonString: {jsonString}")
     song_data = json.loads(jsonString)
@@ -33,15 +38,23 @@ async def getITunesPreview(jsonString: str) -> list[dict]:
 
     songs = []
     for song in song_data:
+
+        #parameters required for itunes search
         name = song.get('name')
         artist = song.get('artist')
+
         itunes_url = f"https://itunes.apple.com/search?term={name}&entity=song&attribute=artistTerm&limit=25"
         response = requests.get(itunes_url)
         if response.status_code != 200:
             print(f"Failed to fetch data from iTunes API for {name} by {artist}. Status code: {response.status_code}")
             continue
 
-        data = response.json()["results"]
+        #strip CR characters from key and replace in song dictionary
+        k = song.get("key")
+        if isinstance(k, str):
+            song["key"] = _strip_cr(k) #replace key with stripped key
+        
+        data = response.json()["results"] #itunes data
         matches = [
             track for track in data
             if _artist_match(artist, track["artistName"])
@@ -54,5 +67,5 @@ async def getITunesPreview(jsonString: str) -> list[dict]:
             song["artworkURL"] = track.get("artworkUrl100", "").replace("100x100", "600x600")
             songs.append(song)
 
-    logger.info(f"songs: {songs}")
+    logger.info(f"itnues songs returned: {songs}")
     return songs
