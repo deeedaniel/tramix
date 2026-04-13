@@ -1,8 +1,7 @@
 import re
 import requests
 import json
-
-maxSongs = 5 # set max songs generated to 5
+from loguru import logger
 
 def _normalize_artist(artist: str) -> str:
     # Strip featured artists (ft., feat., featuring, with, x, &) and normalize
@@ -25,14 +24,15 @@ def _title_match(json_name: str, itunes_track: str) -> bool:
     b = _normalize_title(itunes_track)
     return a == b or a in b or b in a
 
-async def getITunesPreview(jsonString: str) -> None:
-    print("recieved jsonString: ", jsonString)
-    songData = json.loads(jsonString)
-    if not songData or not isinstance(songData, list):
+
+async def getITunesPreview(jsonString: str) -> list[dict]:
+    logger.info(f"recieved jsonString: {jsonString}")
+    song_data = json.loads(jsonString)
+    if not song_data or not isinstance(song_data, list):
         raise ValueError("Invalid JSON format or missing 'previewUrl' key.")
 
     songs = []
-    for song in songData:
+    for song in song_data:
         name = song.get('name')
         artist = song.get('artist')
         itunes_url = f"https://itunes.apple.com/search?term={name}&entity=song&attribute=artistTerm&limit=25"
@@ -53,7 +53,6 @@ async def getITunesPreview(jsonString: str) -> None:
             song["previewURL"] = track["previewUrl"]
             song["artworkURL"] = track.get("artworkUrl100", "").replace("100x100", "600x600")
             songs.append(song)
-        if len(songs) == 5: # if 5 itunes previews sucessfully generated, break
-            break
 
+    logger.info(f"songs: {songs}")
     return songs

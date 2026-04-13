@@ -5,10 +5,88 @@ import numpy as np
 import tempfile
 import os
 import subprocess
+from loguru import logger
+from pydantic import BaseModel, Field, TypeAdapter
 from concurrent.futures import ThreadPoolExecutor
 
 executor = ThreadPoolExecutor(max_workers=8)
 
+class Song(BaseModel):
+    name: str = Field(description="The name of the song")
+    artist: str = Field(description="The artist of the song")
+    bpm: int = Field(description="The bpm of the song")
+    key: str = Field(description="The key of the song")
+    camelot_key: str = Field(description="The camelot key of the song")
+    previewURL: str = Field(description="The preview URL of the song")
+    artworkURL: str = Field(description="The artwork URL of the song")
+
+song_adapter = TypeAdapter(Song)
+
+
+async def analyze_track(song: dict):
+    """
+    Downloads and analyzes a single track. 
+    Uses ThreadPool for CPU-bound tasks to ensure true parallelism.
+    """
+
+    validated_song = song_adapter.validate_python(song)
+
+    url = validated_song.previewURL
+    name = validated_song.name
+    artist = validated_song.artist
+    start_bpm = validated_song.bpm
+
+    tmp_m4a_path = None
+    tmp_wav_path = None
+    loop = asyncio.get_event_loop()
+    
+    try:
+        # 1. ASYNC DOWNLOAD (Non-blocking)
+        async with httpx.AsyncClient(follow_redirects=True, timeout=10.0) as client:
+            # Tip: Apple previews are small, but we can cap it with a Range header if needed
+            response = await client.get(url, headers={"User-Agent": "Mozilla/5.0"})
+            response.raise_for_status()
+            audio_bytes = response.content
+
+        # 2. SAVE TO TEMP (Sync but fast)
+        with tempfile.NamedTemporaryFile(suffix=".m4a", delete=False) as tmp:
+            tmp.write(audio_bytes)
+            tmp_m4a_path = tmp.name
+
+        # 3. CPU INTENSIVE: FFMPEG (Offload to Thread)
+        tmp_wav_path = tmp_m4a_path.replace(".m4a", ".wav")
+        ffmpeg_cmd = ["ffmpeg", "-y", "-i", tmp_m4a_path, "-ar", "11025", "-ac", "1", tmp_wav_path]
+        
+        await loop.run_in_executor(
+            executor, 
+            lambda: subprocess.run(ffmpeg_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+        )
+
+        # 4. CPU INTENSIVE: LIBROSA LOAD & ANALYZE (Offload to Thread)
+        # We wrap the math-heavy parts in a helper function to run in the executor
+        def perform_analysis(path):
+            y, sr = librosa.load(path, sr=11025, mono=True, offset=5.0, duration=30.0)
+            tempo_result, _ = librosa.beat.beat_track(y=y, sr=sr, start_bpm=start_bpm)
+            # detect_key must be defined in your scope!
+            key_name, mode, camelot = detect_key(y, sr) 
+            return float(tempo_result[0]), key_name, mode, camelot
+
+        tempo, key_name, mode, camelot = await loop.run_in_executor(executor, perform_analysis, tmp_wav_path)
+
+        logger.info(f"✅ Analyzed: {tempo:.1f} BPM | {key_name} {mode}")
+        return {"bpm": tempo, "key": key_name, "mode": mode, "camelot": camelot, "name": name, "artist": artist}
+
+    except Exception as e:
+        print(f"❌ Error on {url}: {e}")
+        return {"error": str(e)}
+    
+    finally:
+        # Cleanup
+        for path in [tmp_m4a_path, tmp_wav_path]:
+            if path and os.path.exists(path):
+                try: os.remove(path)
+                except: pass
+                
 # Camelot wheel mapping (key_index, is_major) -> Camelot notation
 CAMELOT = {
     (0,  True):  "8B",  # C major
@@ -74,65 +152,3 @@ def detect_key(y, sr):
     camelot = CAMELOT[(key_idx, is_major)]
     
     return key_name, mode, camelot
-
-
-async def analyze_track(song):
-    """
-    Downloads and analyzes a single track. 
-    Uses ThreadPool for CPU-bound tasks to ensure true parallelism.
-    """
-    url = song["previewURL"]
-    name = song["name"]
-    artist = song["artist"]
-    start_bpm = song["bpm"]
-
-    tmp_m4a_path = None
-    tmp_wav_path = None
-    loop = asyncio.get_event_loop()
-    
-    try:
-        # 1. ASYNC DOWNLOAD (Non-blocking)
-        async with httpx.AsyncClient(follow_redirects=True, timeout=10.0) as client:
-            # Tip: Apple previews are small, but we can cap it with a Range header if needed
-            response = await client.get(url, headers={"User-Agent": "Mozilla/5.0"})
-            response.raise_for_status()
-            audio_bytes = response.content
-
-        # 2. SAVE TO TEMP (Sync but fast)
-        with tempfile.NamedTemporaryFile(suffix=".m4a", delete=False) as tmp:
-            tmp.write(audio_bytes)
-            tmp_m4a_path = tmp.name
-
-        # 3. CPU INTENSIVE: FFMPEG (Offload to Thread)
-        tmp_wav_path = tmp_m4a_path.replace(".m4a", ".wav")
-        ffmpeg_cmd = ["ffmpeg", "-y", "-i", tmp_m4a_path, "-ar", "11025", "-ac", "1", tmp_wav_path]
-        
-        await loop.run_in_executor(
-            executor, 
-            lambda: subprocess.run(ffmpeg_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
-        )
-
-        # 4. CPU INTENSIVE: LIBROSA LOAD & ANALYZE (Offload to Thread)
-        # We wrap the math-heavy parts in a helper function to run in the executor
-        def perform_analysis(path):
-            y, sr = librosa.load(path, sr=11025, mono=True, offset=5.0, duration=30.0)
-            tempo_result, _ = librosa.beat.beat_track(y=y, sr=sr, start_bpm=start_bpm)
-            # detect_key must be defined in your scope!
-            key_name, mode, camelot = detect_key(y, sr) 
-            return float(tempo_result[0]), key_name, mode, camelot
-
-        tempo, key_name, mode, camelot = await loop.run_in_executor(executor, perform_analysis, tmp_wav_path)
-
-        print(f"✅ Analyzed: {tempo:.1f} BPM | {key_name} {mode}")
-        return {"bpm": tempo, "key": key_name, "mode": mode, "camelot": camelot, "name": name, "artist": artist}
-
-    except Exception as e:
-        print(f"❌ Error on {url}: {e}")
-        return {"error": str(e)}
-    
-    finally:
-        # Cleanup
-        for path in [tmp_m4a_path, tmp_wav_path]:
-            if path and os.path.exists(path):
-                try: os.remove(path)
-                except: pass

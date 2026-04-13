@@ -6,12 +6,8 @@ client = genai.Client(api_key=settings.GEMINI_API_KEY)
 
 async def get_song_suggestions(string):
 
-    # for model in client.models.list():
-    #     print('hello')
-    #     print(model.name)
-
     research_query = (
-        f"Search for 10 songs similar in genre, mood, and production style to '{string}'. "
+        f"Search for 20 songs similar in genre, mood, and production style to '{string}'. "
         "For each song, provide the Name, Artist, Musical Key, and the 'Intended BPM'. "
         "GUIDELINES TO PREVENT HALLUCINATION: "
         "1. VERIFY BPM: Cross-reference Musicnotes.com or official sheet music to find the 'Project Tempo'. "
