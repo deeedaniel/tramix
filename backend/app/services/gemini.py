@@ -25,7 +25,7 @@ async def get_song_suggestions(string: str) -> list[dict]:
     """
 
     research_response = client.models.generate_content(
-        model="gemini-2.5-flash-lite",
+        model="gemini-3.1-flash-lite-preview",
         contents=research_prompt,
         config=types.GenerateContentConfig(
             tools=[types.Tool(google_search=types.GoogleSearch())]
@@ -62,7 +62,7 @@ async def get_song_suggestions(string: str) -> list[dict]:
     """
 
     final_response = client.models.generate_content(
-        model="gemini-2.5-flash-lite",
+        model="gemini-3.1-flash-lite-preview",
         contents=formatting_prompt,
         config=types.GenerateContentConfig(
             system_instruction="You are a data formatter. Return ONLY the JSON array. No markdown, no explanation, no backticks.",

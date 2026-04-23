@@ -38,8 +38,11 @@ async def getITunesPreview(payload: str | list) -> list[dict]:
         song_data = json.loads(payload)
     else:
         raise TypeError("Song payload must be a JSON string or a list of song dicts.")
-    if not song_data or not isinstance(song_data, list):
-        raise ValueError("Invalid JSON format or missing 'previewUrl' key.")
+    if not isinstance(song_data, list):
+        raise ValueError("Song payload must deserialize to a list of song dicts.")
+    if not song_data:
+        logger.warning("getITunesPreview received an empty song list; returning [].")
+        return []
 
     songs = []
     for song in song_data:

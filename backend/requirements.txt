@@ -5,3 +5,5 @@ google-genai
 librosa
 numpy
 loguru
+google-auth
+PyJWT
