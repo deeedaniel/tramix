@@ -7,3 +7,4 @@ numpy
 loguru
 google-auth
 PyJWT
+supabase
